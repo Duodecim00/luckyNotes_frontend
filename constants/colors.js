@@ -3,6 +3,7 @@ const COLORS = {
     primary : "#DFC592",
     secundary : "#112E29",
     terceary : "#E4EBEC",
+    contras1 : "#033D33",
     gray: "rgba(178,178,178,0.5)",
 }
 

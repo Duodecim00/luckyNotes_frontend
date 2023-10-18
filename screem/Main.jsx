@@ -19,36 +19,20 @@ import { ItemNote, oneNote} from "../constants/ItemNote";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import BarButton from "../components/BarButton";
+import HAader from "../components/HAader"
 
 
 
 
  
-const Main = () => {
+const Main = ({ navigation }) => {
 
 
   return (
     
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary,  }}> 
-            <View style={{backgroundColor: COLORS.primary,justifyContent: "space-between" ,flexDirection: "row",alignItems: "center", justifyContent: "center",height:50, borderBottomColor:COLORS.secundary, borderBottomWidth: 1,}}>
-                 <Image
-                  source={require("../assets/2sintil.png")}
-                  style={{
-                    width:48,
-                    height:25,
-                  }}
-                />
-                        
-                <View>
-                <TouchableOpacity >
-                <Ionicons style={{marginVertical:5}}
-                name="add-circle" size={40}                
-                color={COLORS.secundary}/>
-                </TouchableOpacity>
-                </View>
-                
-        
-              </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary  }}> 
+
+            <HAader navigation={navigation}/>
               
           <View style={{flex: 1}}>  
                 
@@ -58,7 +42,7 @@ const Main = () => {
                 data={ItemNote}
                 renderItem={oneNote}/> 
             </View> 
-         <BarButton/>
+            <BarButton navigation={navigation} />
     </SafeAreaView>
               
   );

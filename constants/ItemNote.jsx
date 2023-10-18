@@ -1,6 +1,7 @@
-import {Text, View, TouchableOpacity} from "react-native";
+import {Text, View, TouchableOpacity,Pressable} from "react-native";
 import COLORS from "./colors";
 import { Ionicons } from "@expo/vector-icons";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 
 export const ItemNote = [
@@ -64,27 +65,32 @@ export const oneNote = ({item}) =>(
     
  // <Text>{item.id}</Text> ,
  //<Text>{item.Descripcion}</Text>
- <View style={{borderRadius: 20, backgroundColor: COLORS.secundary,marginVertical: 4,height:80, paddingLeft: "5%",justifyContent: "space-between" ,flexDirection: "row"}}>
+ <View style={{borderRadius: 20, backgroundColor: COLORS.secundary,marginVertical: 4,height:80,justifyContent: "space-between" ,flexDirection: "row"}}>
 
-    <View>
+    <Pressable style={({pressed}) => [{ paddingLeft: 10,backgroundColor: pressed ? COLORS.contras1 :COLORS.secundary,borderTopLeftRadius: 20,borderBottomLeftRadius: 20, width:230}]}>
             <Text style={{ color: COLORS.terceary, fontSize: 20, fontWeight: "bold",marginVertical: 4}}>{item.name}</Text>
             <Text style={{ color: COLORS.terceary,}}>{item.Descripcion}</Text>
-    </View>
-   
-    <View style={{justifyContent: "space-between" ,flexDirection: "row",marginVertical:8}}>
-        
-        <TouchableOpacity>
-            <Ionicons style={{marginVertical:12,marginHorizontal:8,marginBottom:10}}
-            name="trash-outline" size={30}                
+    </Pressable >
+
+    <View style={{justifyContent: "space-between" ,flexDirection: "row",marginVertical:8,position:"relative"}}>
+
+        <Pressable style={({pressed}) => [{backgroundColor: pressed ? COLORS.contras1 :COLORS.secundary,borderRadius: 20,marginHorizontal:3}]}>
+            <Ionicons style={{marginVertical:12,marginHorizontal:8}}
+            name="archive-outline" size={30}                
             color={COLORS.terceary}/>
-        </TouchableOpacity>
+        </Pressable>
         
-        <TouchableOpacity>
-        <Ionicons style={{marginVertical:12,marginHorizontal:8,marginBottom:10}}
+        <Pressable style={({pressed}) => [{backgroundColor: pressed ? COLORS.contras1 :COLORS.secundary,borderRadius: 20,marginHorizontal:3}]}>
+        <Ionicons style={{marginVertical:12,marginHorizontal:8}}
         name="bookmark" size={30}                
         color={COLORS.terceary}/>
-        </TouchableOpacity>
+        </Pressable>
         
+        <Pressable style={({pressed}) => [{backgroundColor: pressed ? COLORS.alert :COLORS.secundary,borderRadius: 20,marginHorizontal:3}]}>
+        <Ionicons style={{marginVertical:12,marginHorizontal:8}}
+        name="trash-outline" size={30}                
+        color={COLORS.terceary}/>
+        </Pressable>
         
     </View> 
     

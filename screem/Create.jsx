@@ -41,17 +41,12 @@ const Create = ({ navigation }) => {
             name="add-circle" size={40}                
             color={COLORS.primary}/>
 
-  
-                    
-     
             <TouchableOpacity >
             <Ionicons style={{marginVertical:5}}
             name="checkmark-circle" size={40}                
             color={COLORS.secundary}/>
             </TouchableOpacity>
           
-            
-    
           </View>
           
       

@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Login, SingUp, Welcome, Main, Group, Favorite, Trash,User,Create,DestroyAcount } from "./screem";
+import { Login, SingUp, Welcome, Main, Group, Favorite, Trash,User,Create,DestroyAcount, EditNote } from "./screem";
 
 
 import COLORS from "./constants/colors";
@@ -19,6 +19,14 @@ export default function App() {
         <Stack.Screen
           name="welcome"
           component={Welcome}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="editNote"
+          component={EditNote}
           options={{
             headerShown: false,
           }}

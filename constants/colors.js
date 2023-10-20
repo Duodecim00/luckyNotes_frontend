@@ -1,14 +1,14 @@
 const COLORS = {
-    black: "#222222",
-    primary : "#DFC592",
-    secundary : "#112E29",
-    terceary : "#E4EBEC",
-    contras1 : "#0CA58A",
-    contras2: "#074D41",
-    gray: "rgba(178,178,178,0.5)",
-    alert: "#BF0B0B",
-    quaternary: "#005B41",
-  quientecary: "008170",
+  black: "#222222",
+  primary: "#DFC592",
+  secundary: "#112E29",
+  terceary: "#E4EBEC",
+  contras1: "#0CA58A",
+  contras2: "#074D41",
+  gray: "rgba(178,178,178,0.5)",
+  alert: "#BF0B0B",
+  quaternary: "#005B41",
+  quientecary: "#008170",
   gray: "rgba(178,178,178,0.5)",
   white: "#FFFFFF",
   primaryText: "#232D3F",
@@ -23,7 +23,6 @@ const COLORS = {
   disabled: "#CCCCCC",
   Delete: "#B70928",
   favoritos: "#1B88C5",
-}
+};
 
-
-export default COLORS
+export default COLORS;

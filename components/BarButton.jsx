@@ -14,6 +14,7 @@ import COLORS from "../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function BarButton({ navigation }) {
+  
   const [activeCategory, setActiveCategory] = useState(1);
 
   const handleMailPress = () => {
@@ -33,7 +34,7 @@ export default function BarButton({ navigation }) {
 
   const handleTrashPress = () => {
     alert("Trash");
-    navigation.navigate("trash")
+    navigation.navigate("trash");
   };
 
   return (
@@ -51,7 +52,6 @@ export default function BarButton({ navigation }) {
           flexDirection: "row",
           alignItems: "center",
           marginHorizontal: "10%",
-         
         }}
       >
         <TouchableOpacity onPress={handleMailPress}>

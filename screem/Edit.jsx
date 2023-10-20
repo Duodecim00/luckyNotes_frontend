@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from "../constants/colors";
 import { Colors } from "react-native/Libraries/NewAppScreen";
@@ -16,45 +16,100 @@ import Button from "../components/Button.jsx";
 import CustomAlert from "../components/Alert";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import GroupSelec from "../components/GroupSelec";
+import HAader2 from "../components/HAader2";
 
-const Login = ({ navigation }) => {
+const EditNote = ({ navigation, route }) => {
+  const { noteId, noteTitle, noteContent } = route.params;
+  const [token, setToken] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessages, setAlertMessages] = useState([]);
   const [alertTitle, setAlertTitle] = useState("");
-  const [isPasswordShown, setIsPasswordShown] = useState(true);
+  const [title, setTitle] = useState(noteTitle);
+  const [content, setContent] = useState(noteContent);
+  const [series, setSeries] = useState("");
+  const [fav, setFav] = useState(false);
+  const [trash, setTrash] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [user_info, setUser_info] = useState("");
-  const [password, setPassword] = useState("");
+  const [isChecked2, setIsChecked2] = useState(false);
+
+  const getToken = async () => {
+    try {
+      const tokenAuth = await AsyncStorage.getItem("token");
+      if (!tokenAuth) {
+        alert("please login again");
+        deleteToken();
+        navigation.navigate("welcome");
+      }
+      if (tokenAuth) {
+        setToken(tokenAuth);
+      }
+    } catch (error) {
+      console.log(error);
+      alert(error);
+    }
+  };
+
+  const deleteToken = async () => {
+    try {
+      await AsyncStorage.removeItem("token");
+      console.log("token removed");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const userData = {
-      user_info,
-      password,
+      title,
+      content,
+      series,
+      fav,
+      trash,
     };
+    console.log(userData);
     try {
       const response = await axios.post(
-        "https://luckynotesbackend-production.up.railway.app/auth/login",
-        userData
+        `https://luckynotesbackend-production.up.railway.app/note/edit_note/${noteId}`,
+        userData,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+        }
       );
-      if (response.status == "200") {
-        const token = response.data.token;
-        await AsyncStorage.setItem("token", token);
+
+      console.log(response.data.status);
+      if (response.status === 200) {
+        alert("Note Edited");
         navigation.navigate("main");
       }
     } catch (error) {
-      let errors = error.response.data.error;
+      if (error.response.data.status == "405") {
+        alert("Session expired, please login again");
+        deleteToken();
+        navigation.navigate("welcome");
+      }
+      let errors = error.response.data.errors;
       setAlertMessages(errors.map((error) => error.msg));
       setShowAlert(true);
     }
   };
 
-  const handleCloseAlert = () => {
+  const handleCloseAlert = ({navigation}) => {
     setShowAlert(false);
   };
 
+  useEffect(() => {
+    getToken();
+  }, []);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.secundary }}>
+      <HAader2 navigation={navigation}/>
       <View style={{ flex: 1, marginHorizontal: 22 }}>
         <ScrollView>
           <View style={{ marginVertical: 22 }}>
@@ -72,17 +127,9 @@ const Login = ({ navigation }) => {
                 color: COLORS.terceary,
               }}
             >
-              Welcome Back
+              Edit your notes
             </Text>
 
-            <Text
-              style={{
-                fontSize: 16,
-                color: COLORS.terceary,
-              }}
-            >
-              Hello again you been missed!
-            </Text>
             <View style={{ marginBottom: 12 }}>
               <Text
                 style={{
@@ -92,7 +139,7 @@ const Login = ({ navigation }) => {
                   color: COLORS.terceary,
                 }}
               >
-                User Name or email
+                Put your note title
               </Text>
 
               <View
@@ -109,11 +156,11 @@ const Login = ({ navigation }) => {
                 }}
               >
                 <TextInput
-                  placeholder="Enter your User Name / email"
+                  placeholder="Note Title"
                   placeholderTextColor={COLORS.terceary}
                   keyboardType="default"
-                  value={user_info}
-                  onChangeText={(text) => setUser_info(text)}
+                  value={title}
+                  onChangeText={(text) => setTitle(text)}
                   style={{
                     color: COLORS.terceary,
                     width: "100%",
@@ -121,6 +168,7 @@ const Login = ({ navigation }) => {
                 />
               </View>
             </View>
+             <GroupSelec/>
             <View style={{ marginBottom: 12 }}>
               <Text
                 style={{
@@ -130,16 +178,17 @@ const Login = ({ navigation }) => {
                   color: COLORS.terceary,
                 }}
               >
-                Password
+                Content
               </Text>
-
+             
               <View
                 style={{
                   width: "100%",
-                  height: 48,
+                  height: 200,
                   borderColor: COLORS.primary,
                   borderWidth: 1,
                   borderRadius: 8,
+                  marginVertical: 8,
                   alignItems: "center",
                   justifyContent: "center",
                   paddingLeft: 22,
@@ -147,35 +196,20 @@ const Login = ({ navigation }) => {
                 }}
               >
                 <TextInput
-                  placeholder="Enter your Password"
+                  multiline={true}
+                  numberOfLines={10}
+                  placeholder="Enter your note Content"
                   placeholderTextColor={COLORS.terceary}
-                  secureTextEntry={isPasswordShown}
-                  value={password}
-                  onChangeText={(text) => setPassword(text)}
+                  value={content}
+                  onChangeText={(text) => setContent(text)}
                   keyboardType="default"
                   style={{
                     color: COLORS.terceary,
+                    textAlignVertical: 'top',
                     width: "100%",
+                    height: "100%",
                   }}
                 />
-
-                <TouchableOpacity
-                  onPress={() => setIsPasswordShown(!isPasswordShown)}
-                  style={{
-                    position: "absolute",
-                    right: 12,
-                  }}
-                >
-                  {isPasswordShown == true ? (
-                    <Ionicons
-                      name="eye-off"
-                      size={24}
-                      color={COLORS.terceary}
-                    />
-                  ) : (
-                    <Ionicons name="eye" size={24} color={COLORS.terceary} />
-                  )}
-                </TouchableOpacity>
               </View>
             </View>
 
@@ -189,18 +223,32 @@ const Login = ({ navigation }) => {
                 style={{
                   marginRight: 8,
                 }}
-                value={isChecked}
-                onValueChange={setIsChecked}
+                value={fav}
+                onValueChange={setFav}
                 color={isChecked ? COLORS.primary : undefined}
               />
-              <Text style={{ color: COLORS.terceary }}>
-                {" "}
-                Solo es un placebo!!!
-              </Text>
+              <Text style={{ color: COLORS.terceary }}>Fav</Text>
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                marginVertical: 6,
+              }}
+            >
+              <Checkbox
+                style={{
+                  marginRight: 8,
+                }}
+                value={trash}
+                onValueChange={setTrash}
+                color={isChecked2 ? COLORS.primary : undefined}
+              />
+              <Text style={{ color: COLORS.terceary }}>Trash</Text>
             </View>
 
             <Button
-              title="login"
+              title="Edit Note"
               onPress={handleSubmit}
               style={{
                 marginTop: 18,
@@ -213,50 +261,7 @@ const Login = ({ navigation }) => {
                 justifyContent: "center",
                 marginVertical: 22,
               }}
-            >
-              <Text style={{ fontSize: 16, color: COLORS.terceary }}>
-                {" "}
-                Don´t have an account ?
-              </Text>
-              <Pressable onPress={() => navigation.navigate("singUp")}>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    color: COLORS.terceary,
-                    fontWeight: "bold",
-                    marginLeft: 6,
-                  }}
-                >
-                  {" "}
-                  Sign Up
-                </Text>
-              </Pressable>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginVertical: 22,
-              }}
-            >
-              <Text style={{ fontSize: 16, color: COLORS.terceary }}>
-                {" "}
-                Forgot your password ?
-              </Text>
-              <Pressable onPress={() => navigation.navigate("resetPassword")}>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    color: COLORS.terceary,
-                    fontWeight: "bold",
-                    marginLeft: 6,
-                  }}
-                >
-                  {" "}
-                  Rest Password
-                </Text>
-              </Pressable>
-            </View>
+            ></View>
           </View>
         </ScrollView>
       </View>
@@ -264,4 +269,4 @@ const Login = ({ navigation }) => {
   );
 };
 
-export default Login;
+export default EditNote;

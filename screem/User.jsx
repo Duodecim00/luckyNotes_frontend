@@ -1,36 +1,36 @@
 import {
-    View,
-    Text,
-    TextInput,
-    ScrollView,
-    TouchableOpacity,
-    Pressable,
-    FlatList,
-    Image,
-  } from "react-native";
-  import  { React,useEffect, useRef, useState } from "react";
-  import { SafeAreaView } from "react-native-safe-area-context";
-  import COLORS from "../constants/colors";
-  import { Ionicons } from "@expo/vector-icons";
-  import Button from "../components/Button";
-  import { NavigationContainer } from '@react-navigation/native';
-  import { createNativeStackNavigator } from '@react-navigation/native-stack';
-  import { ItemNote, oneNote} from "../constants/ItemNote";
-  import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-  
-  import BarButton from "../components/BarButton";
-import HAader2 from "../components/HAader2";
-  
-  const User = ({ navigation }) => {
-    const [isPasswordShown, setIsPasswordShown] = useState(true);
-    return (
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  Pressable,
+  FlatList,
+  Image,
+} from "react-native";
+import { React, useEffect, useRef, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import COLORS from "../constants/colors";
+import { Ionicons } from "@expo/vector-icons";
+import Button from "../components/Button";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { ItemNote, oneNote } from "../constants/ItemNote";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.secundary }}>
-        <HAader2/>
-<View style={{ flex: 1, marginHorizontal: 22 }}>
+import BarButton from "../components/BarButton";
+import HAader2 from "../components/HAader2";
+
+const User = ({ navigation }) => {
+  const [isPasswordShown, setIsPasswordShown] = useState(true);
+
+ 
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.secundary }}>
+      <HAader2 navigation={navigation} />
+      <View style={{ flex: 1, marginHorizontal: 22 }}>
         <ScrollView>
           <View style={{ marginVertical: 22 }}>
-            
             <View style={{ marginBottom: 12 }}>
               <Text
                 style={{
@@ -59,7 +59,6 @@ import HAader2 from "../components/HAader2";
                 <TextInput
                   keyboardType="default"
                   style={{
-
                     color: COLORS.terceary,
                     width: "100%",
                   }}
@@ -171,7 +170,6 @@ import HAader2 from "../components/HAader2";
               </View>
             </View>
 
-
             <View style={{ marginBottom: 12 }}>
               <Text
                 style={{
@@ -232,19 +230,17 @@ import HAader2 from "../components/HAader2";
               onPress={() => navigation.navigate("destroyacount")}
               style={{
                 borderColor: COLORS.terceary,
-                color:COLORS.terceary,
+                color: COLORS.terceary,
                 backgroundColor: COLORS.alert,
                 marginTop: 18,
                 marginBottom: 4,
               }}
             />
-            
           </View>
         </ScrollView>
       </View>
-      </SafeAreaView>
-    );
-  };
-  
-  export default User;
-  
+    </SafeAreaView>
+  );
+};
+
+export default User;
